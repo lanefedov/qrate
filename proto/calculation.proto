@@ -1,0 +1,46 @@
+syntax = "proto3";
+package qrate.calc;
+option go_package = "qrate/calc/pb";
+
+service CalculationService {
+  rpc Calculate(CalculationRequest) returns (CalculationResponse);
+}
+
+message Worker {
+  string name = 1;
+  double salary = 2;
+  double hours = 3;
+  double fund_hours = 4;
+}
+
+message CalculationRequest {
+  double materials_cost = 1;
+  double equipment_cost = 2;
+  double additional_cost = 3;
+  double other_cost = 4;
+  repeated Worker workers = 5;
+  double bonus_rate = 6;
+  double tax_rate = 7;
+  double travel_cost = 8;
+  double estimate_cost = 9;
+  double overhead_rate = 10;
+}
+
+message CostBreakdown {
+  double materials_cost = 1;
+  double equipment_cost = 2;
+  double additional_cost = 3;
+  double other_cost = 4;
+  double labor_cost = 5;
+  double labor_with_coefficients = 6;
+  double travel_cost = 7;
+  double estimate_cost = 8;
+  double subtotal = 9;
+  double overhead_amount = 10;
+  double total_nic = 11;
+}
+
+message CalculationResponse {
+  double nic = 1;
+  CostBreakdown breakdown = 2;
+}

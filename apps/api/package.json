@@ -1,0 +1,52 @@
+{
+  "name": "qrate-api",
+  "version": "0.0.1",
+  "description": "QRate API Gateway",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.0",
+    "@nestjs/common": "^10.4.22",
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/core": "^10.4.22",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/microservices": "^10.4.22",
+    "@nestjs/mongoose": "^10.1.0",
+    "@nestjs/passport": "^10.0.3",
+    "@nestjs/platform-express": "^10.4.22",
+    "@nestjs/swagger": "^7.4.2",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "bcryptjs": "^3.0.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.4",
+    "mongoose": "^8.23.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pdf-lib": "^1.17.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.4.9",
+    "@nestjs/schematics": "^10.2.3",
+    "@nestjs/testing": "^10.4.22",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^25.5.2",
+    "@types/passport-jwt": "^4.0.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,43 @@
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+
+# Generated protobuf (regenerate from proto/)
+apps/calc/pb/*.go
+
+# Node.js / Next.js / NestJS
+node_modules/
+dist/
+.next/
+.nuxt/
+.output/
+.cache/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
