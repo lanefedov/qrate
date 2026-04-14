@@ -18,8 +18,8 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
-    expose:
-      - "3001"
+    ports:
+      - "3001:3001"
     environment:
       - NODE_ENV=production
       - MONGODB_URI=${MONGODB_URI}
