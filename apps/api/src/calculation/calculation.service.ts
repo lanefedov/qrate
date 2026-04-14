@@ -1,6 +1,7 @@
-import { Injectable, OnModuleInit, Inject } from '@nestjs/common';
+import { Injectable, OnModuleInit, Inject, Logger } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom, Observable } from 'rxjs';
+import { sanitizeForLog, toLogMessage } from '../common/logging.utils';
 
 interface CalcRequest {
   materialsCost: number;
@@ -44,6 +45,7 @@ interface CalculationServiceGrpc {
 @Injectable()
 export class CalculationService implements OnModuleInit {
   private calcService!: CalculationServiceGrpc;
+  private readonly logger = new Logger(CalculationService.name);
 
   constructor(@Inject('CALC_PACKAGE') private client: ClientGrpc) {}
 
@@ -53,6 +55,22 @@ export class CalculationService implements OnModuleInit {
   }
 
   async calculate(input: CalcRequest): Promise<CalcResponse> {
-    return firstValueFrom(this.calcService.calculate(input));
+    this.logger.log(
+      toLogMessage('calc.request', {
+        workerCount: input.workers.length,
+        payload: sanitizeForLog(input),
+      }),
+    );
+
+    const result = await firstValueFrom(this.calcService.calculate(input));
+
+    this.logger.log(
+      toLogMessage('calc.response', {
+        nic: result.nic,
+        breakdown: sanitizeForLog(result.breakdown),
+      }),
+    );
+
+    return result;
   }
 }
