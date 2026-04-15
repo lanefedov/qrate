@@ -60,10 +60,8 @@ export class OrdersController {
       await this.ordersService.generatePdf(id, req.user.userId);
 
     const filename = `QRate_Report_${orderNumber}.pdf`;
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="${filename}"`,
-    });
+    res.type('application/pdf');
+    res.attachment(filename);
 
     const stream = fs.createReadStream(filePath);
     return new StreamableFile(stream);
