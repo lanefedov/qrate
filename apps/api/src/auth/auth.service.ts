@@ -1,6 +1,7 @@
 import {
   Injectable,
   ConflictException,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -9,11 +10,15 @@ import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { TestTypesService } from '../test-types/test-types.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly usersService: UsersService,
+    private readonly testTypesService: TestTypesService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
@@ -31,6 +36,7 @@ export class AuthService {
       fullName: dto.fullName,
       phone: dto.phone,
     });
+    this.initializeTestTypesInBackground(user._id.toString());
 
     const tokens = await this.generateTokens(
       user._id.toString(),
@@ -112,5 +118,14 @@ export class AuthService {
   ): Promise<void> {
     const hash = await bcrypt.hash(refreshToken, 10);
     await this.usersService.updateRefreshToken(userId, hash);
+  }
+
+  private initializeTestTypesInBackground(userId: string): void {
+    void this.testTypesService.initializeDefaultsForUser(userId).catch((error) => {
+      const message = error instanceof Error ? error.message : String(error);
+      this.logger.error(
+        `Failed to initialize default test types for user ${userId}: ${message}`,
+      );
+    });
   }
 }

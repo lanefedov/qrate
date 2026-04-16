@@ -15,6 +15,9 @@ interface Props {
   description?: string;
   onConfirm: () => void;
   loading?: boolean;
+  confirmText?: string;
+  loadingText?: string;
+  confirmVariant?: 'default' | 'destructive';
 }
 
 export function ConfirmDialog({
@@ -24,6 +27,9 @@ export function ConfirmDialog({
   description = 'Вы уверены? Это действие нельзя отменить.',
   onConfirm,
   loading,
+  confirmText = 'Подтвердить',
+  loadingText = 'Сохранение...',
+  confirmVariant = 'default',
 }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -36,8 +42,8 @@ export function ConfirmDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
             Отмена
           </Button>
-          <Button variant="destructive" onClick={onConfirm} disabled={loading}>
-            {loading ? 'Удаление...' : 'Удалить'}
+          <Button variant={confirmVariant} onClick={onConfirm} disabled={loading}>
+            {loading ? loadingText : confirmText}
           </Button>
         </div>
       </DialogContent>

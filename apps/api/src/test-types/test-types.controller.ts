@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -28,26 +29,36 @@ export class TestTypesController {
 
   @Get()
   @ApiOperation({ summary: 'List active test types' })
-  findAll() {
-    return this.testTypesService.findAll();
+  findAll(@Request() req: any) {
+    return this.testTypesService.findAll(req.user.userId);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create a test type' })
   @ApiResponse({ status: 201, description: 'Test type created' })
-  create(@Body() dto: CreateTestTypeDto) {
-    return this.testTypesService.create(dto);
+  create(@Request() req: any, @Body() dto: CreateTestTypeDto) {
+    return this.testTypesService.create(req.user.userId, dto);
+  }
+
+  @Post('reset-defaults')
+  @ApiOperation({ summary: 'Reset test types to the default set' })
+  resetDefaults(@Request() req: any) {
+    return this.testTypesService.resetToDefaults(req.user.userId);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a test type' })
-  update(@Param('id') id: string, @Body() dto: UpdateTestTypeDto) {
-    return this.testTypesService.update(id, dto);
+  update(
+    @Request() req: any,
+    @Param('id') id: string,
+    @Body() dto: UpdateTestTypeDto,
+  ) {
+    return this.testTypesService.update(id, req.user.userId, dto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Soft-delete a test type' })
-  remove(@Param('id') id: string) {
-    return this.testTypesService.remove(id);
+  remove(@Request() req: any, @Param('id') id: string) {
+    return this.testTypesService.remove(id, req.user.userId);
   }
 }

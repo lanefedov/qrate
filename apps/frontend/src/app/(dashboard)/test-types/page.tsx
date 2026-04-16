@@ -83,12 +83,19 @@ export default function TestTypesPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editItem, setEditItem] = useState<TestType | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [resetOpen, setResetOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [resetting, setResetting] = useState(false);
 
   const fetchTypes = useCallback(async () => {
-    const { data } = await api.get('/test-types');
-    setTypes(data.data ?? data);
-    setLoading(false);
+    try {
+      const { data } = await api.get('/test-types');
+      setTypes(data.data ?? data);
+    } catch {
+      toast.error('Не удалось загрузить виды испытаний');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { fetchTypes(); }, [fetchTypes]);
@@ -126,6 +133,20 @@ export default function TestTypesPage() {
     } catch { toast.error('Ошибка удаления'); }
   };
 
+  const handleReset = async () => {
+    setResetting(true);
+    try {
+      const { data } = await api.post('/test-types/reset-defaults');
+      setTypes(data.data ?? data);
+      setResetOpen(false);
+      toast.success('Справочник сброшен к значениям по умолчанию');
+    } catch {
+      toast.error('Не удалось сбросить справочник');
+    } finally {
+      setResetting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -142,14 +163,24 @@ export default function TestTypesPage() {
       </div>
 
       <Card>
-        <CardHeader><CardTitle className="text-base">Виды испытаний</CardTitle></CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
+          <CardTitle className="text-base">Виды испытаний</CardTitle>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground"
+            onClick={() => setResetOpen(true)}
+          >
+            Вернуться к видам по умолчанию
+          </Button>
+        </CardHeader>
         <CardContent>
           {loading ? (
             <TableSkeleton cols={4} />
           ) : types.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
               <FlaskConical className="h-12 w-12 opacity-30" />
-              <p className="text-sm">Справочник пуст. Добавьте первый вид испытаний!</p>
+              <p className="text-sm">Справочник пуст.</p>
             </div>
           ) : (
             <div className="overflow-x-auto rounded-lg border">
@@ -198,6 +229,21 @@ export default function TestTypesPage() {
         title="Удалить вид испытаний?"
         description="Вид будет деактивирован. Существующие заказы не пострадают."
         onConfirm={handleDelete}
+        confirmText="Удалить"
+        loadingText="Удаление..."
+        confirmVariant="destructive"
+      />
+
+      <ConfirmDialog
+        open={resetOpen}
+        onOpenChange={setResetOpen}
+        title="Вернуться к видам по умолчанию?"
+        description="Текущий набор видов испытаний будет заменён значениями по умолчанию. Существующие заказы не пострадают."
+        onConfirm={handleReset}
+        loading={resetting}
+        confirmText="Вернуться"
+        loadingText="Возврат..."
+        confirmVariant="destructive"
       />
     </div>
   );

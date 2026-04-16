@@ -100,6 +100,7 @@ export interface TestTypeDefaultParams {
 
 export interface TestType {
   _id: string;
+  userId: string;
   name: string;
   description?: string;
   defaultParams?: TestTypeDefaultParams;
