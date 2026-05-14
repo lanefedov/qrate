@@ -121,6 +121,8 @@ export class TestTypesService {
   }
 
   async findAll(userId: string): Promise<TestTypeDocument[]> {
+    await this.initializeDefaultsForUser(userId);
+
     const userObjectId = this.toUserObjectId(userId);
 
     return this.testTypeModel

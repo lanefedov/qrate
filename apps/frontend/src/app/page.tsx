@@ -2,15 +2,21 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/auth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function RootPage() {
   const router = useRouter();
-  const token = useAuthStore((s) => s.accessToken);
+  const { isAuthenticated, isAuthChecked, initializeSession } = useAuth();
 
   useEffect(() => {
-    router.replace(token ? '/dashboard' : '/login');
-  }, [token, router]);
+    void initializeSession();
+  }, [initializeSession]);
+
+  useEffect(() => {
+    if (isAuthChecked) {
+      router.replace(isAuthenticated ? '/dashboard' : '/login');
+    }
+  }, [isAuthChecked, isAuthenticated, router]);
 
   return null;
 }

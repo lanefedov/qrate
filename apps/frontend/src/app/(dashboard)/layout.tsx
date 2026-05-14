@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 
@@ -12,13 +12,17 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const token = useAuthStore((s) => s.accessToken);
+  const { isAuthenticated, isAuthChecked, initializeSession } = useAuth();
 
   useEffect(() => {
-    if (!token) router.replace('/login');
-  }, [token, router]);
+    void initializeSession();
+  }, [initializeSession]);
 
-  if (!token) return null;
+  useEffect(() => {
+    if (isAuthChecked && !isAuthenticated) router.replace('/login');
+  }, [isAuthChecked, isAuthenticated, router]);
+
+  if (!isAuthChecked || !isAuthenticated) return null;
 
   return (
     <div className="flex h-screen">

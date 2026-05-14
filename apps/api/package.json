@@ -4,7 +4,7 @@
   "description": "QRate API Gateway",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -43,8 +43,11 @@
     "@nestjs/schematics": "^10.2.3",
     "@nestjs/testing": "^10.4.22",
     "@types/bcryptjs": "^2.4.6",
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.5.2",
     "@types/passport-jwt": "^4.0.1",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"

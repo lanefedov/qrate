@@ -1,24 +1,21 @@
 'use client';
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 interface AuthState {
   accessToken: string | null;
-  refreshToken: string | null;
-  setTokens: (access: string, refresh: string) => void;
+  isAuthChecked: boolean;
+  setAccessToken: (accessToken: string) => void;
+  clearAuth: () => void;
+  markAuthChecked: () => void;
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      accessToken: null,
-      refreshToken: null,
-      setTokens: (accessToken, refreshToken) =>
-        set({ accessToken, refreshToken }),
-      logout: () => set({ accessToken: null, refreshToken: null }),
-    }),
-    { name: 'qrate-auth' },
-  ),
-);
+export const useAuthStore = create<AuthState>()((set) => ({
+  accessToken: null,
+  isAuthChecked: false,
+  setAccessToken: (accessToken) => set({ accessToken, isAuthChecked: true }),
+  clearAuth: () => set({ accessToken: null, isAuthChecked: true }),
+  markAuthChecked: () => set({ isAuthChecked: true }),
+  logout: () => set({ accessToken: null, isAuthChecked: true }),
+}));

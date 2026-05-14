@@ -2,15 +2,21 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/auth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const token = useAuthStore((s) => s.accessToken);
+  const { isAuthenticated, isAuthChecked, initializeSession } = useAuth();
 
   useEffect(() => {
-    if (token) router.replace('/dashboard');
-  }, [token, router]);
+    void initializeSession();
+  }, [initializeSession]);
+
+  useEffect(() => {
+    if (isAuthChecked && isAuthenticated) router.replace('/dashboard');
+  }, [isAuthChecked, isAuthenticated, router]);
+
+  if (!isAuthChecked || isAuthenticated) return null;
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">

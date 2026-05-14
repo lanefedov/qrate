@@ -1,7 +1,6 @@
 import {
   Injectable,
   ConflictException,
-  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -14,8 +13,6 @@ import { TestTypesService } from '../test-types/test-types.service';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(AuthService.name);
-
   constructor(
     private readonly usersService: UsersService,
     private readonly testTypesService: TestTypesService,
@@ -36,7 +33,7 @@ export class AuthService {
       fullName: dto.fullName,
       phone: dto.phone,
     });
-    this.initializeTestTypesInBackground(user._id.toString());
+    await this.testTypesService.initializeDefaultsForUser(user._id.toString());
 
     const tokens = await this.generateTokens(
       user._id.toString(),
@@ -44,6 +41,23 @@ export class AuthService {
     );
     await this.storeRefreshHash(user._id.toString(), tokens.refreshToken);
     return tokens;
+  }
+
+  async logout(refreshToken?: string): Promise<void> {
+    if (!refreshToken) {
+      return;
+    }
+
+    let payload: { sub: string; type: string };
+    try {
+      payload = this.jwtService.verify(refreshToken);
+    } catch {
+      return;
+    }
+
+    if (payload.type === 'refresh') {
+      await this.usersService.updateRefreshToken(payload.sub, null);
+    }
   }
 
   async login(dto: LoginDto) {
@@ -120,12 +134,4 @@ export class AuthService {
     await this.usersService.updateRefreshToken(userId, hash);
   }
 
-  private initializeTestTypesInBackground(userId: string): void {
-    void this.testTypesService.initializeDefaultsForUser(userId).catch((error) => {
-      const message = error instanceof Error ? error.message : String(error);
-      this.logger.error(
-        `Failed to initialize default test types for user ${userId}: ${message}`,
-      );
-    });
-  }
 }
