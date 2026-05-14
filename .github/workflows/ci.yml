@@ -81,6 +81,24 @@ jobs:
           go-version-file: apps/calc/go.mod
           cache-dependency-path: apps/calc/go.sum
 
+      - name: Install protobuf compiler
+        run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
+        working-directory: .
+
+      - name: Install protobuf Go plugins
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Generate protobuf files
+        run: |
+          mkdir -p pb
+          protoc -I ../../proto \
+            --go_out=. --go_opt=module=qrate/calc \
+            --go-grpc_out=. --go-grpc_opt=module=qrate/calc \
+            ../../proto/calculation.proto
+
       - name: Run tests
         run: go test ./...
 

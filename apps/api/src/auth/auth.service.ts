@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from '../users/users.service';
+import { UserDocument } from '../users/schemas/user.schema';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { TestTypesService } from '../test-types/test-types.service';
@@ -40,7 +41,10 @@ export class AuthService {
       user.email,
     );
     await this.storeRefreshHash(user._id.toString(), tokens.refreshToken);
-    return tokens;
+    return {
+      ...tokens,
+      user: this.toAuthUser(user),
+    };
   }
 
   async logout(refreshToken?: string): Promise<void> {
@@ -76,7 +80,10 @@ export class AuthService {
       user.email,
     );
     await this.storeRefreshHash(user._id.toString(), tokens.refreshToken);
-    return tokens;
+    return {
+      ...tokens,
+      user: this.toAuthUser(user),
+    };
   }
 
   async refresh(refreshToken: string) {
@@ -109,7 +116,18 @@ export class AuthService {
       user.email,
     );
     await this.storeRefreshHash(user._id.toString(), tokens.refreshToken);
-    return tokens;
+    return {
+      ...tokens,
+      user: this.toAuthUser(user),
+    };
+  }
+
+  async getCurrentUser(userId: string) {
+    const user = await this.usersService.findById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return this.toAuthUser(user);
   }
 
   private async generateTokens(userId: string, email: string) {
@@ -134,4 +152,11 @@ export class AuthService {
     await this.usersService.updateRefreshToken(userId, hash);
   }
 
+  private toAuthUser(user: UserDocument) {
+    return {
+      _id: user._id.toString(),
+      email: user.email,
+      fullName: user.fullName,
+    };
+  }
 }
