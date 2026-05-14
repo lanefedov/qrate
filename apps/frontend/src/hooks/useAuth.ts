@@ -10,7 +10,7 @@ export function useAuth() {
   const {
     accessToken,
     isAuthChecked,
-    setAccessToken,
+    setSession,
     clearAuth,
     markAuthChecked,
   } = useAuthStore();
@@ -23,18 +23,18 @@ export function useAuth() {
     try {
       const { data } = await api.post('/auth/refresh');
       const tokens = data.data ?? data;
-      setAccessToken(tokens.accessToken);
+      setSession(tokens.accessToken, tokens.user);
     } catch {
       clearAuth();
     } finally {
       markAuthChecked();
     }
-  }, [accessToken, isAuthChecked, setAccessToken, clearAuth, markAuthChecked]);
+  }, [accessToken, isAuthChecked, setSession, clearAuth, markAuthChecked]);
 
   const login = async (email: string, password: string) => {
     const { data } = await api.post('/auth/login', { email, password });
     const tokens = data.data ?? data;
-    setAccessToken(tokens.accessToken);
+    setSession(tokens.accessToken, tokens.user);
     router.push('/dashboard');
   };
 
@@ -46,7 +46,7 @@ export function useAuth() {
   }) => {
     const { data } = await api.post('/auth/register', payload);
     const tokens = data.data ?? data;
-    setAccessToken(tokens.accessToken);
+    setSession(tokens.accessToken, tokens.user);
     router.push('/dashboard');
   };
 

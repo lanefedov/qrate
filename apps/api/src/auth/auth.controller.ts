@@ -1,17 +1,21 @@
 import {
   Controller,
+  Get,
   Post,
   Body,
   Headers,
+  Request,
   Res,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 const REFRESH_TOKEN_COOKIE = 'qrate_refresh_token';
 
@@ -32,7 +36,7 @@ export class AuthController {
   async register(@Body() dto: RegisterDto, @Res({ passthrough: true }) res: Response) {
     const tokens = await this.authService.register(dto);
     this.setRefreshCookie(res, tokens.refreshToken);
-    return { accessToken: tokens.accessToken };
+    return { accessToken: tokens.accessToken, user: tokens.user };
   }
 
   @Post('login')
@@ -42,7 +46,7 @@ export class AuthController {
   async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
     const tokens = await this.authService.login(dto);
     this.setRefreshCookie(res, tokens.refreshToken);
-    return { accessToken: tokens.accessToken };
+    return { accessToken: tokens.accessToken, user: tokens.user };
   }
 
   @Post('refresh')
@@ -56,7 +60,7 @@ export class AuthController {
     const refreshToken = this.getRefreshToken(cookieHeader);
     const tokens = await this.authService.refresh(refreshToken);
     this.setRefreshCookie(res, tokens.refreshToken);
-    return { accessToken: tokens.accessToken };
+    return { accessToken: tokens.accessToken, user: tokens.user };
   }
 
   @Post('logout')
@@ -70,6 +74,15 @@ export class AuthController {
     await this.authService.logout(refreshToken);
     this.clearRefreshCookie(res);
     return { success: true };
+  }
+
+  @Get('me')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get current user profile' })
+  @ApiResponse({ status: 200, description: 'Current user returned' })
+  me(@Request() req: any) {
+    return this.authService.getCurrentUser(req.user.userId);
   }
 
   private setRefreshCookie(res: Response, refreshToken: string): void {

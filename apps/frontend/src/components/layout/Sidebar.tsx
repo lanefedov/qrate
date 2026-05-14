@@ -10,11 +10,13 @@ import {
   FlaskConical,
   LogOut,
   Menu,
+  UserCircle,
   X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './Logo';
 import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
@@ -28,6 +30,9 @@ const navItems = [
 function NavContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const displayName = user?.fullName?.trim() || 'Пользователь';
+  const displayEmail = user?.email?.trim() || 'Почта не указана';
 
   return (
     <>
@@ -58,6 +63,23 @@ function NavContent({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
       <Separator />
       <div className="p-3">
+        <div className="mb-2 flex min-w-0 items-center gap-3 rounded-lg px-3 py-2">
+          <UserCircle className="h-5 w-5 shrink-0 text-muted-foreground" />
+          <div className="min-w-0">
+            <p
+              className="truncate text-sm font-medium"
+              title={displayName}
+            >
+              {displayName}
+            </p>
+            <p
+              className="truncate text-xs text-muted-foreground"
+              title={displayEmail}
+            >
+              {displayEmail}
+            </p>
+          </div>
+        </div>
         <Button
           variant="ghost"
           className="w-full justify-start gap-3 text-muted-foreground"

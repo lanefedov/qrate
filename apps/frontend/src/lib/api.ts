@@ -29,7 +29,7 @@ api.interceptors.response.use(
           { withCredentials: true },
         );
         const tokens = data.data ?? data;
-        useAuthStore.getState().setAccessToken(tokens.accessToken);
+        useAuthStore.getState().setSession(tokens.accessToken, tokens.user);
         original.headers.Authorization = `Bearer ${tokens.accessToken}`;
         return api(original);
       } catch {
