@@ -14,7 +14,7 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   app.enableCors({
-    origin: config.get<string[]>('frontendOrigins') ?? ['http://localhost:3000'],
+    origin: true,
     credentials: true,
   });
   app.useGlobalPipes(
