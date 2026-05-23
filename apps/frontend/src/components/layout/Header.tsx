@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 const titles: Record<string, string> = {
   '/dashboard': 'Панель управления',
@@ -16,8 +17,9 @@ export function Header() {
     'QRate';
 
   return (
-    <header className="flex h-14 items-center border-b px-6">
+    <header className="flex h-14 items-center justify-between border-b bg-background/95 px-6">
       <h1 className="text-lg font-semibold">{title}</h1>
+      <ThemeToggle />
     </header>
   );
 }

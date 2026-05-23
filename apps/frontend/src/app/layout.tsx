@@ -1,9 +1,29 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Toaster } from 'sonner';
+import { ThemeProvider, ThemedToaster } from '@/components/theme/ThemeProvider';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] });
+const themeScript = `
+  (() => {
+    const storageKey = 'qrate-theme';
+    let storedTheme = null;
+
+    try {
+      storedTheme = window.localStorage.getItem(storageKey);
+    } catch {}
+
+    const theme = storedTheme === 'light' || storedTheme === 'dark'
+      ? storedTheme
+      : window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle('light', theme === 'light');
+    document.documentElement.style.colorScheme = theme;
+  })();
+`;
 
 export const metadata: Metadata = {
   title: 'QRate — Расчёт стоимости испытаний РКТ',
@@ -16,10 +36,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru" className="dark">
+    <html lang="ru" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={inter.className}>
-        {children}
-        <Toaster theme="dark" position="top-right" richColors closeButton />
+        <ThemeProvider>
+          {children}
+          <ThemedToaster />
+        </ThemeProvider>
       </body>
     </html>
   );
