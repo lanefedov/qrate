@@ -53,8 +53,8 @@ function FormulaBlock() {
           <span><strong className="text-foreground">Зпокуп</strong> — покупка/аренда спецоборуд.</span>
           <span><strong className="text-foreground">Зпр</strong> — работы сторонних орг.</span>
           <span><strong className="text-foreground">ЗПᵢ·(t/Тср)</strong> — оклад × (время / фонд)</span>
-          <span><strong className="text-foreground">Ксф</strong> — накладные на ФОТ, %</span>
-          <span><strong className="text-foreground">Кнз</strong> — начисления в Соцфонд, %</span>
+          <span><strong className="text-foreground">Ксф</strong> — начисления в Соцфонд, %</span>
+          <span><strong className="text-foreground">Кнз</strong> — накладные на ФОТ, %</span>
           <span><strong className="text-foreground">Зкр / Зст</strong> — командировки / страхование</span>
           <span className="col-span-2"><strong className="text-foreground">Кпр</strong> — норма прибыли, на всю себестоимость</span>
         </div>
@@ -112,8 +112,8 @@ export function CalculationForm({ initial, onSubmit, loading }: Props) {
         <CardHeader><CardTitle className="text-base">Коэффициенты</CardTitle></CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-3">
-            {numField('bonusRate', 'Накладные на ФОТ (Ксф)', '%')}
-            {numField('taxRate', 'Начисления в Соцфонд (Кнз)', '%')}
+            {numField('bonusRate', 'Начисления в Соцфонд (Ксф)', '%')}
+            {numField('taxRate', 'Накладные на ФОТ (Кнз)', '%')}
             {numField('overheadRate', 'Норма прибыли (Кпр)', '%')}
           </div>
         </CardContent>

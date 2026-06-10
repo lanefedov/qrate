@@ -56,12 +56,12 @@ export class CalculationInputDto {
   @Type(() => WorkerDto)
   workers!: WorkerDto[];
 
-  @ApiProperty({ example: 30, description: 'Ксф — накладные на ФОТ (%)' })
+  @ApiProperty({ example: 30, description: 'Ксф — начисления в Соцфонд (%)' })
   @IsNumber()
   @Min(0)
   bonusRate!: number;
 
-  @ApiProperty({ example: 30.2, description: 'Кнз — начисления в Соцфонд (%)' })
+  @ApiProperty({ example: 30.2, description: 'Кнз — накладные на ФОТ (%)' })
   @IsNumber()
   @Min(0)
   taxRate!: number;
