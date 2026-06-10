@@ -41,7 +41,7 @@ function FormulaBlock() {
   return (
     <Card className="border-primary/30 bg-primary/5">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-primary">Формула расчёта НИЦ (затратный метод)</CardTitle>
+        <CardTitle className="text-sm font-medium text-primary">Формула расчёта НИЦ</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 text-sm">
         <p className="font-mono text-xs leading-relaxed text-muted-foreground">
