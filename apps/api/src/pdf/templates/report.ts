@@ -289,15 +289,15 @@ class PdfBuilder {
       COLOR_TABLE_HEADER,
     );
     const params: [string, string][] = [
-      ['Затраты на материалы (Зм)', formatMoney(data.input.materialsCost)],
-      ['Затраты на оборудование (Зоб)', formatMoney(data.input.equipmentCost)],
-      ['Дополнительные затраты (Здоп)', formatMoney(data.input.additionalCost)],
-      ['Прочие затраты (Зпр)', formatMoney(data.input.otherCost)],
-      ['Коэффициент доплат/премий (Кф)', formatPercent(data.input.bonusRate)],
-      ['Коэффициент начислений (Кн)', formatPercent(data.input.taxRate)],
+      ['Материалы, комплектующие (Зм)', formatMoney(data.input.materialsCost)],
+      ['Изготовление оснастки (Зизг)', formatMoney(data.input.equipmentCost)],
+      ['Покупка/аренда спецоборудования (Зпокуп)', formatMoney(data.input.additionalCost)],
+      ['Работы сторонних организаций (Зпр)', formatMoney(data.input.otherCost)],
+      ['Накладные на ФОТ (Ксф)', formatPercent(data.input.bonusRate)],
+      ['Начисления в Соцфонд (Кнз)', formatPercent(data.input.taxRate)],
       ['Командировочные расходы (Зкр)', formatMoney(data.input.travelCost)],
-      ['Сметные расходы (Зсм)', formatMoney(data.input.estimateCost)],
-      ['Коэффициент накладных (Ктр)', formatPercent(data.input.overheadRate)],
+      ['Страхование (Зст)', formatMoney(data.input.estimateCost)],
+      ['Норма прибыли (Кпр)', formatPercent(data.input.overheadRate)],
     ];
     params.forEach(([label, value], i) => {
       const bg = i % 2 === 0 ? undefined : rgb(0.96, 0.96, 0.96);
@@ -347,16 +347,16 @@ class PdfBuilder {
       COLOR_TABLE_HEADER,
     );
     const breakdownRows: [string, number][] = [
-      ['Материалы', data.breakdown.materialsCost],
-      ['Оборудование', data.breakdown.equipmentCost],
-      ['Доп. затраты', data.breakdown.additionalCost],
-      ['Прочие', data.breakdown.otherCost],
-      ['Трудозатраты', data.breakdown.laborCost],
-      ['Трудозатраты с коэффициентами', data.breakdown.laborWithCoefficients],
+      ['Материалы, комплектующие', data.breakdown.materialsCost],
+      ['Изготовление оснастки', data.breakdown.equipmentCost],
+      ['Покупка/аренда спецоборудования', data.breakdown.additionalCost],
+      ['Работы сторонних организаций', data.breakdown.otherCost],
+      ['Оплата труда', data.breakdown.laborCost],
+      ['Оплата труда с Ксф и Кнз', data.breakdown.laborWithCoefficients],
       ['Командировочные', data.breakdown.travelCost],
-      ['Сметные', data.breakdown.estimateCost],
-      ['Промежуточный итог', data.breakdown.subtotal],
-      ['Накладные расходы', data.breakdown.overheadAmount],
+      ['Страхование', data.breakdown.estimateCost],
+      ['Себестоимость', data.breakdown.subtotal],
+      ['Прибыль', data.breakdown.overheadAmount],
     ];
     breakdownRows.forEach(([label, value], i) => {
       const bg = i % 2 === 0 ? undefined : rgb(0.96, 0.96, 0.96);

@@ -54,19 +54,19 @@ function TestTypeForm({ initial, onSubmit, loading }: FormProps) {
           <Input type="number" step="0.01" value={materialsCost} onChange={(e) => setMaterialsCost(+e.target.value)} />
         </div>
         <div className="space-y-1">
-          <Label className="text-xs">Оборудование, ₽</Label>
+          <Label className="text-xs">Изготовление оснастки, ₽</Label>
           <Input type="number" step="0.01" value={equipmentCost} onChange={(e) => setEquipmentCost(+e.target.value)} />
         </div>
         <div className="space-y-1">
-          <Label className="text-xs">Доплаты, %</Label>
+          <Label className="text-xs">Накладные на ФОТ, %</Label>
           <Input type="number" step="0.01" value={bonusRate} onChange={(e) => setBonusRate(+e.target.value)} />
         </div>
         <div className="space-y-1">
-          <Label className="text-xs">Начисления, %</Label>
+          <Label className="text-xs">Начисления в Соцфонд, %</Label>
           <Input type="number" step="0.01" value={taxRate} onChange={(e) => setTaxRate(+e.target.value)} />
         </div>
         <div className="space-y-1">
-          <Label className="text-xs">Накладные, %</Label>
+          <Label className="text-xs">Норма прибыли, %</Label>
           <Input type="number" step="0.01" value={overheadRate} onChange={(e) => setOverheadRate(+e.target.value)} />
         </div>
       </div>

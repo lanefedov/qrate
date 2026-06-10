@@ -35,17 +35,17 @@ export class CalculationInputDto {
   @Min(0)
   materialsCost!: number;
 
-  @ApiProperty({ example: 5000, description: 'Зоб — затраты на оборудование' })
+  @ApiProperty({ example: 5000, description: 'Зизг — изготовление оснастки' })
   @IsNumber()
   @Min(0)
   equipmentCost!: number;
 
-  @ApiProperty({ example: 2000, description: 'Здоп — дополнительные затраты' })
+  @ApiProperty({ example: 2000, description: 'Зпокуп — покупка/аренда спецоборудования' })
   @IsNumber()
   @Min(0)
   additionalCost!: number;
 
-  @ApiProperty({ example: 1000, description: 'Зпр — прочие затраты' })
+  @ApiProperty({ example: 1000, description: 'Зпр — работы сторонних организаций' })
   @IsNumber()
   @Min(0)
   otherCost!: number;
@@ -56,12 +56,12 @@ export class CalculationInputDto {
   @Type(() => WorkerDto)
   workers!: WorkerDto[];
 
-  @ApiProperty({ example: 30, description: 'Кф — коэффициент доплат/премий (%)' })
+  @ApiProperty({ example: 30, description: 'Ксф — накладные на ФОТ (%)' })
   @IsNumber()
   @Min(0)
   bonusRate!: number;
 
-  @ApiProperty({ example: 30.2, description: 'Кн — коэффициент начислений (%)' })
+  @ApiProperty({ example: 30.2, description: 'Кнз — начисления в Соцфонд (%)' })
   @IsNumber()
   @Min(0)
   taxRate!: number;
@@ -71,12 +71,12 @@ export class CalculationInputDto {
   @Min(0)
   travelCost!: number;
 
-  @ApiProperty({ example: 2000, description: 'Зсм — сметные расходы' })
+  @ApiProperty({ example: 2000, description: 'Зст — страхование' })
   @IsNumber()
   @Min(0)
   estimateCost!: number;
 
-  @ApiProperty({ example: 20, description: 'Ктр — коэффициент накладных расходов (%)' })
+  @ApiProperty({ example: 20, description: 'Кпр — норма прибыли (%)' })
   @IsNumber()
   @Min(0)
   overheadRate!: number;

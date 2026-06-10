@@ -41,17 +41,22 @@ function FormulaBlock() {
   return (
     <Card className="border-primary/30 bg-primary/5">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-primary">Формула расчёта НИЦ</CardTitle>
+        <CardTitle className="text-sm font-medium text-primary">Формула расчёта НИЦ (затратный метод)</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 text-sm">
         <p className="font-mono text-xs leading-relaxed text-muted-foreground">
-          НИЦ = Зм + Зоб + Здоп + Зпр + ΣЗотi × (1 + Кф) × (1 + Кн) + Зкр + Зсм + НР
+          НИЦ = [ Зм + Зизг + Зпокуп + Зпр + ΣЗПᵢ·(t/Тср)·(1 + Ксф/100 + Кнз/100) + Зкр + Зст ] · (1 + Кпр/100)
         </p>
         <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs text-muted-foreground">
-          <span><strong className="text-foreground">Зотi</strong> = Оклад × (Часы / Фонд)</span>
-          <span><strong className="text-foreground">НР</strong> = Подитог × Ктр</span>
-          <span><strong className="text-foreground">Кф</strong> — коэффициент доплат</span>
-          <span><strong className="text-foreground">Кн</strong> — начисления на ФОТ</span>
+          <span><strong className="text-foreground">Зм</strong> — материалы, комплектующие</span>
+          <span><strong className="text-foreground">Зизг</strong> — изготовление оснастки</span>
+          <span><strong className="text-foreground">Зпокуп</strong> — покупка/аренда спецоборуд.</span>
+          <span><strong className="text-foreground">Зпр</strong> — работы сторонних орг.</span>
+          <span><strong className="text-foreground">ЗПᵢ·(t/Тср)</strong> — оклад × (время / фонд)</span>
+          <span><strong className="text-foreground">Ксф</strong> — накладные на ФОТ, %</span>
+          <span><strong className="text-foreground">Кнз</strong> — начисления в Соцфонд, %</span>
+          <span><strong className="text-foreground">Зкр / Зст</strong> — командировки / страхование</span>
+          <span className="col-span-2"><strong className="text-foreground">Кпр</strong> — норма прибыли, на всю себестоимость</span>
         </div>
       </CardContent>
     </Card>
@@ -89,10 +94,10 @@ export function CalculationForm({ initial, onSubmit, loading }: Props) {
         <CardHeader><CardTitle className="text-base">Основные затраты</CardTitle></CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2">
-            {numField('materialsCost', 'Затраты на материалы (Зм)', '₽')}
-            {numField('equipmentCost', 'Затраты на оборудование (Зоб)', '₽')}
-            {numField('additionalCost', 'Дополнительные затраты (Здоп)', '₽')}
-            {numField('otherCost', 'Прочие затраты (Зпр)', '₽')}
+            {numField('materialsCost', 'Материалы, комплектующие (Зм)', '₽')}
+            {numField('equipmentCost', 'Изготовление оснастки (Зизг)', '₽')}
+            {numField('additionalCost', 'Покупка/аренда спецоборудования (Зпокуп)', '₽')}
+            {numField('otherCost', 'Работы сторонних организаций (Зпр)', '₽')}
           </div>
         </CardContent>
       </Card>
@@ -107,9 +112,9 @@ export function CalculationForm({ initial, onSubmit, loading }: Props) {
         <CardHeader><CardTitle className="text-base">Коэффициенты</CardTitle></CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-3">
-            {numField('bonusRate', 'Коэффициент доплат/премий (Кф)', '%')}
-            {numField('taxRate', 'Коэффициент начислений (Кн)', '%')}
-            {numField('overheadRate', 'Коэффициент накладных (Ктр)', '%')}
+            {numField('bonusRate', 'Накладные на ФОТ (Ксф)', '%')}
+            {numField('taxRate', 'Начисления в Соцфонд (Кнз)', '%')}
+            {numField('overheadRate', 'Норма прибыли (Кпр)', '%')}
           </div>
         </CardContent>
       </Card>
@@ -119,7 +124,7 @@ export function CalculationForm({ initial, onSubmit, loading }: Props) {
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2">
             {numField('travelCost', 'Командировочные расходы (Зкр)', '₽')}
-            {numField('estimateCost', 'Сметные расходы (Зсм)', '₽')}
+            {numField('estimateCost', 'Страхование (Зст)', '₽')}
           </div>
         </CardContent>
       </Card>

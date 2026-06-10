@@ -18,16 +18,16 @@ interface Props {
 }
 
 const breakdownLabels: [keyof CalcResult['breakdown'], string][] = [
-  ['materialsCost', 'Материалы'],
-  ['equipmentCost', 'Оборудование'],
-  ['additionalCost', 'Доп. затраты'],
-  ['otherCost', 'Прочие'],
-  ['laborCost', 'Трудозатраты'],
-  ['laborWithCoefficients', 'Трудозатраты с коэфф.'],
+  ['materialsCost', 'Материалы, комплектующие'],
+  ['equipmentCost', 'Изготовление оснастки'],
+  ['additionalCost', 'Покупка/аренда спецоборудования'],
+  ['otherCost', 'Работы сторонних организаций'],
+  ['laborCost', 'Оплата труда'],
+  ['laborWithCoefficients', 'Оплата труда с Ксф и Кнз'],
   ['travelCost', 'Командировочные'],
-  ['estimateCost', 'Сметные'],
-  ['subtotal', 'Промежуточный итог'],
-  ['overheadAmount', 'Накладные расходы'],
+  ['estimateCost', 'Страхование'],
+  ['subtotal', 'Себестоимость'],
+  ['overheadAmount', 'Прибыль'],
 ];
 
 export function CalculationResult({

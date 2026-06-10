@@ -8,7 +8,7 @@ import (
 
 // Calculate computes НИЦ (начальная исходная цена) based on the request parameters.
 //
-// НИЦ = (Зм + Зоб + Здоп + Зпр + Σ(ЗПi×ti/Tфi)×(1+(Кф+Кн)/100) + Зкр + Зсм) × (1 + Ктр/100)
+// НИЦ = [Зм + Зизг + Зпокуп + Зпр + Σ(ЗПi×ti/Тср)×(1+(Ксф+Кнз)/100) + Зкр + Зст] × (1 + Кпр/100)
 func Calculate(req *pb.CalculationRequest) (float64, *pb.CostBreakdown, error) {
 	if req == nil {
 		return 0, nil, fmt.Errorf("request must not be nil")
